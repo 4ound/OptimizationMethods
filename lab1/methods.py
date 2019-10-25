@@ -28,8 +28,16 @@ def fibonacci(f, a, b):
     pass
 
 
+def fibonacci_n(n):
+    return Decimal("1") / Decimal("5").sqrt() * (
+            ((Decimal("1") + Decimal("5").sqrt()) / Decimal("2")) ** Decimal(n) -
+            ((Decimal("1") - Decimal("5").sqrt()) / Decimal("2")) ** Decimal(n)
+    )
+
+
 def main():
     print(dichotomy(Var.f, Var.a, Var.b))
+    print(fibonacci_n(5))
 
 
 if __name__ == '__main__':
