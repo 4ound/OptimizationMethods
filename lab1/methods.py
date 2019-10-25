@@ -1,7 +1,8 @@
 from decimal import Decimal
 from answer import Answer
-from constants import EPS
+from constants import EPS, PRECISION
 from lab1.variant import Variant3 as Var
+from math import sqrt, fabs
 
 DELTA = EPS / Decimal(2)
 
@@ -24,5 +25,46 @@ def dichotomy(f, a, b):
     return Answer(x1, f(x1))
 
 
+def golden_ratio(f, a, b):
+    t = Decimal((sqrt(5) - 1) / 2)
+    x1 = Decimal(a + (1 - t) * (b - a))
+    x2 = Decimal(a + t * (b - a))
+    while fabs(b - a) > EPS:
+        if f(x1) > f(x2):
+            a = x1
+            x1 = x2
+            x2 = a + t * (b - a)
+        else:
+            b = x2
+            x2 = x1
+            x1 = a + (1 - t) * (b - a)
+    return round(Decimal((a + b) / 2), PRECISION)
+
+
+def increase(f, a, b):
+    h = 0
+    x = []
+    k = 0
+    x.append(Decimal(1.9))
+    if f(x[k]) > f(x[k] + EPS):
+        x.append(x[k] + EPS)
+        k += 1
+        h = EPS
+    elif f(x[k]) > f(x[k] - EPS):
+        x.append(x[k] - EPS)
+        k += 1
+        h = -EPS
+    h *= 2
+    x.append(x[k] + h)
+    while f(x[k]) > f(x[k + 1]):
+        k += 1
+        h *= 2
+        x.append(x[k] + h)
+    answer = "Отрезок [" + str(round(x[k - 1], PRECISION)) + ";" + str(round(x[k + 1], PRECISION)) + "] содержит точку минимума"
+    return answer
+
+
 if __name__ == '__main__':
     print(dichotomy(Var.f, Var.a, Var.b))
+    print(golden_ratio(Var.f, Var.a, Var.b))
+    print(increase(Var.f, Var.a, Var.b))
