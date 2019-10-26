@@ -7,6 +7,8 @@ class Answer:
         self.y = y
 
     def __str__(self):
+        if isinstance(self.x, (list, tuple)):
+            return f"F(x) = {round(self.y, PRECISION)}, while x = {list(map(lambda x: round(x, PRECISION), self.x))}"
         return f"F(x) = {round(self.y, PRECISION)}, while x = {round(self.x, PRECISION)}"
 
     def __eq__(self, other):

@@ -115,7 +115,6 @@ def increase(f, a=0, b=0, lam=1.9):
 
 
 def gradient_descent():
-
     def f(x):
         return (x[1] - x[0]) ** 2 + 100 * (1 - x[0]) ** 2
 
@@ -133,19 +132,17 @@ def gradient_descent():
 
     eps_f = Decimal(10 ** (-PRECISION))
     eps_x = (Decimal(10 ** (-PRECISION)), Decimal(10 ** (-PRECISION)))
-    X = [Decimal(0.99), Decimal(0.99)]
-    iterations = 0
+    x = [Decimal(0.99), Decimal(0.99)]
 
     while True:
-        iterations += 1
-        gradient = [f_x0(X), f_x1(X)]
+        gradient = [f_x0(x), f_x1(x)]
         gradient_len = Decimal(sqrt(sum(x_i ** 2 for x_i in gradient)))
-        S = []
+        s = []
         for x_i in gradient:
-            S.append(x_i / gradient_len)
+            s.append(x_i / gradient_len)
 
         def g(lam):
-            args = [X[i] - lam * S[i] for i in range(len(X))]
+            args = [x[i] - lam * s[i] for i in range(len(x))]
             return f(args)
 
         answer = increase(g, 1)
@@ -156,21 +153,21 @@ def gradient_descent():
         dichotomy_result = dichotomy(g, left, right)
         l = dichotomy_result.x
 
-        X_next = []
-        for i in range(len(X)):
-            X_next.append(X[i] - l * S[i])
+        x_next = []
+        for i in range(len(x)):
+            x_next.append(x[i] - l * s[i])
 
         flag = True
-        for i in range(len(X)):
-            if abs(X_next[i] - X[i]) > eps_x[i]:
+        for i in range(len(x)):
+            if abs(x_next[i] - x[i]) > eps_x[i]:
                 flag = False
                 break
 
-        if abs(f(X_next) - f(X)) < eps_f or flag:
-            X_answer = (float(round(X_next[0])), float(round(X_next[1], PRECISION)))
-            return '1e-' + str(PRECISION), '\t', iterations, '\t', X_answer, '\t',round(f(X_next), PRECISION)
+        if abs(f(x_next) - f(x)) < eps_f or flag:
+            x_answer = (float(round(x_next[0])), float(round(x_next[1], PRECISION)))
+            return Answer(x_answer, f(x_next))
 
-        X = X_next
+        x = x_next
 
 
 def main():
