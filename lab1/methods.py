@@ -1,5 +1,5 @@
 from decimal import Decimal
-from answer import Answer
+from answer import Answer, Segment
 from constants import EPS, PRECISION
 from lab1.variant import Variant3 as Var
 from math import sqrt, fabs
@@ -61,8 +61,9 @@ def increase(f, a, b):
         k += 1
         h *= 2
         x.append(x[k] + h)
-    answer = "Отрезок [" + str(round(x[k - 1], PRECISION)) + ";" + str(round(x[k + 1], PRECISION)) + "] содержит точку минимума"
-    return answer
+    ans1 = Answer(x[k - 1], f(x[k - 1]))
+    ans2 = Answer(x[k + 1], f(x[k + 1]))
+    return Segment(ans1, ans2)
 
 
 if __name__ == '__main__':
