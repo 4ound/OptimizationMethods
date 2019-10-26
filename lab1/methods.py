@@ -23,7 +23,7 @@ def dichotomy(f, a, b):
         else:
             a, b = x1, x2
 
-    return Answer(x1, f(x1))
+    return Answer(a, f(a))
 
 
 def fibonacci(f, a, b):
@@ -68,15 +68,21 @@ def golden_ratio(f, a, b):
     t = Decimal((sqrt(5) - 1) / 2)
     x1 = Decimal(a + (1 - t) * (b - a))
     x2 = Decimal(a + t * (b - a))
+    f1 = f(x1)
+    f2 = f(x2)
     while fabs(b - a) > EPS:
-        if f(x1) > f(x2):
+        if f1 > f2:
             a = x1
             x1 = x2
+            f1 = f2
             x2 = a + t * (b - a)
+            f2 = f(x2)
         else:
             b = x2
             x2 = x1
             x1 = a + (1 - t) * (b - a)
+            f2 = f1
+            f1 = f(x1)
     x = (a + b) / 2
     return Answer(x, f(x))
 
