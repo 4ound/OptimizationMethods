@@ -64,13 +64,6 @@ def fibonacci_n(n):
     )
 
 
-def main():
-    print(dichotomy(Var.f, Var.a, Var.b))
-    print(fibonacci(Var.f, Var.a, Var.b))
-    print(golden_ratio(Var.f, Var.a, Var.b))
-    print(increase(Var.f, Var.a, Var.b))
-
-
 def golden_ratio(f, a, b):
     t = Decimal((sqrt(5) - 1) / 2)
     x1 = Decimal(a + (1 - t) * (b - a))
@@ -110,6 +103,13 @@ def increase(f, a, b):
     ans1 = Answer(x[k - 1], f(x[k - 1]))
     ans2 = Answer(x[k + 1], f(x[k + 1]))
     return Segment(ans1, ans2)
+
+
+def main():
+    print(dichotomy(Var.f, Var.a, Var.b))
+    print(fibonacci(Var.f, Var.a, Var.b))
+    print(golden_ratio(Var.f, Var.a, Var.b))
+    print(increase(Var.f, Var.a, Var.b))
 
 
 if __name__ == '__main__':
