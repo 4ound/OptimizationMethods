@@ -25,7 +25,34 @@ def dichotomy(f, a, b):
 
 
 def fibonacci(f, a, b):
-    pass
+    n = 0
+    for i in range(0, 100):
+        if (b - a) / EPS < fibonacci_n(i):
+            n = i
+            break
+
+    la = a + fibonacci_n(n - 2) / fibonacci_n(n) * (b - a)
+    mu = a + fibonacci_n(n - 1) / fibonacci_n(n) * (b - a)
+
+    for k in range(1, n - 1):
+        if f(la) > f(mu):
+            a = la
+            la = mu
+            mu = a + fibonacci_n(n - k - 1) / fibonacci_n(n - k) * (b - a)
+        else:
+            b = mu
+            mu = la
+            la = a + fibonacci_n(n - k - 2) / fibonacci_n(n - k) * (b - a)
+
+    mu = la + EPS
+    if f(la) < f(mu):
+        b = mu
+    else:
+        a = la
+
+    x = (b + a) / Decimal("2")
+
+    return Answer(x, f(x))
 
 
 def fibonacci_n(n):
@@ -37,7 +64,7 @@ def fibonacci_n(n):
 
 def main():
     print(dichotomy(Var.f, Var.a, Var.b))
-    print(fibonacci_n(5))
+    print(fibonacci(Var.f, Var.a, Var.b))
 
 
 if __name__ == '__main__':
