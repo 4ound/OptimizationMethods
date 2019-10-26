@@ -1,5 +1,5 @@
 from decimal import Decimal
-from answer import Answer
+from answer import Answer, Segment
 from constants import EPS, PRECISION
 from lab1.variant import Variant3 as Var
 from math import sqrt
@@ -36,7 +36,7 @@ def fibonacci_n(n):
     )
 
 
-def increase(f, lam):
+def increase(f, a=0, b=0, lam=1.9):
     h = 0
     x = []
     k = 0
@@ -55,7 +55,9 @@ def increase(f, lam):
         k += 1
         h *= 2
         x.append(x[k] + h)
-    return x[k - 1], x[k + 1]
+    ans1 = Answer(x[k - 1], f(x[k - 1]))
+    ans2 = Answer(x[k + 1], f(x[k + 1]))
+    return Segment(ans1, ans2)
 
 
 def gradient_descent():
@@ -79,7 +81,6 @@ def gradient_descent():
     eps_x = (Decimal(10 ** (-PRECISION)), Decimal(10 ** (-PRECISION)))
     X = [Decimal(0.99), Decimal(0.99)]
     iterations = 0
-    calculations = 0
 
     while True:
         iterations += 1
@@ -93,7 +94,8 @@ def gradient_descent():
             args = [X[i] - lam * S[i] for i in range(len(X))]
             return f(args)
 
-        left, right = increase(g, 1)
+        answer = increase(g, 1)
+        left, right = answer.x.x, answer.y.x
         if left > right:
             left, right = right, left
 
@@ -111,26 +113,11 @@ def gradient_descent():
                 break
 
         if abs(f(X_next) - f(X)) < eps_f or flag:
-            # X_next = [round(X_next[0], PRECISION), round(X_next[1], PRECISION)]
-
             X_answer = (float(round(X_next[0])), float(round(X_next[1], PRECISION)))
-            # print(iterations, calculations, X_answer, round(f(X_next), PRECISION))
-
             print('1e-' + str(PRECISION), '\t', iterations, '\t', X_answer, '\t',round(f(X_next), PRECISION))
-
-            # print(iterations, )
-            # print(calculations, '\t')
-            # print(X_answer, '\t')
-            # print(round(f(X_next), PRECISION), '\t')
-
-            # print('x_min =', X_next)
-            # print('f_min =', round(f(X_next), PRECISION))
-            # print(iterations, 'iterations')
-            # print(calculations, 'calculations')
             break
 
         X = X_next
-        # print(f(X))
 
 
 def main():
