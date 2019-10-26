@@ -38,7 +38,8 @@ def golden_ratio(f, a, b):
             b = x2
             x2 = x1
             x1 = a + (1 - t) * (b - a)
-    return round(Decimal((a + b) / 2), PRECISION)
+    x = (a + b) / 2
+    return Answer(x, f(x))
 
 
 def increase(f, a, b):
