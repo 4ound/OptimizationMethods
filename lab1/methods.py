@@ -9,14 +9,12 @@ DELTA = EPS / Decimal(4)
 
 def dichotomy(f, a, b):
     x1 = a
-    calculations = 0
     while abs(b - a) > EPS:
         m = (a + b) / Decimal(2)
         x1 = m - DELTA
         x2 = m + DELTA
         f1 = f(x1)
         f2 = f(x2)
-        calculations += 2
         if f1 < f2:
             b = x2
         elif f1 > f2:
@@ -24,7 +22,7 @@ def dichotomy(f, a, b):
         else:
             a, b = x1, x2
 
-    return Answer(x1, f(x1)), calculations
+    return Answer(x1, f(x1))
 
 
 def fibonacci(f, a, b):
@@ -101,7 +99,6 @@ def gradient_descent():
 
         dichotomy_result = dichotomy(g, left, right)
         l = dichotomy_result[0].x
-        calculations += dichotomy_result[1]
 
         X_next = []
         for i in range(len(X)):
@@ -119,7 +116,7 @@ def gradient_descent():
             X_answer = (float(round(X_next[0])), float(round(X_next[1], PRECISION)))
             # print(iterations, calculations, X_answer, round(f(X_next), PRECISION))
 
-            print('1e-' + str(PRECISION), '\t', iterations, '\t', calculations, '\t', X_answer, '\t',round(f(X_next), PRECISION))
+            print('1e-' + str(PRECISION), '\t', iterations, '\t', X_answer, '\t',round(f(X_next), PRECISION))
 
             # print(iterations, )
             # print(calculations, '\t')
