@@ -1,6 +1,6 @@
 from decimal import Decimal
 from answer import Answer
-from constants import EPS
+from constants import EPS, PRECISION
 from lab1.variant import Variant3 as Var
 from math import sqrt
 
@@ -9,12 +9,14 @@ DELTA = EPS / Decimal(4)
 
 def dichotomy(f, a, b):
     x1 = a
+    calculations = 0
     while abs(b - a) > EPS:
         m = (a + b) / Decimal(2)
         x1 = m - DELTA
         x2 = m + DELTA
         f1 = f(x1)
         f2 = f(x2)
+        calculations += 2
         if f1 < f2:
             b = x2
         elif f1 > f2:
@@ -22,7 +24,7 @@ def dichotomy(f, a, b):
         else:
             a, b = x1, x2
 
-    return Answer(x1, f(x1))
+    return Answer(x1, f(x1)), calculations
 
 
 def fibonacci(f, a, b):
@@ -64,15 +66,22 @@ def gradient_descent():
         return (x[1] - x[0]) ** 2 + 100 * (1 - x[0]) ** 2
 
     def f_x0(x):
-        return 202 * x[0] - 2 * x[1] - 200
+        answer1 = 202 * x[0] - 2 * x[1] - 200
+        args = x[0] + eps_x[0] / 8, x[1]
+        answer2 = (f(args) - f(x)) / (eps_x[0] / 8)
+        return answer1
 
     def f_x1(x):
-        return 2 * x[1] - 2 * x[0]
+        answer1 = 2 * x[1] - 2 * x[0]
+        args = x[0], x[1] + eps_x[1] / 8
+        answer2 = (f(args) - f(x)) / (eps_x[1] / 8)
+        return answer1
 
-    eps_f = Decimal(1e-4)
-    eps_x = (Decimal(1e-4), Decimal(1e-4))
-    X = [Decimal(10000), Decimal(10000)]
+    eps_f = Decimal(10 ** (-PRECISION))
+    eps_x = (Decimal(10 ** (-PRECISION)), Decimal(10 ** (-PRECISION)))
+    X = [Decimal(0.99), Decimal(0.99)]
     iterations = 0
+    calculations = 0
 
     while True:
         iterations += 1
@@ -87,10 +96,12 @@ def gradient_descent():
             return f(args)
 
         left, right = increase(g, 1)
-        if (left > right):
+        if left > right:
             left, right = right, left
 
-        l = dichotomy(g, left, right).x
+        dichotomy_result = dichotomy(g, left, right)
+        l = dichotomy_result[0].x
+        calculations += dichotomy_result[1]
 
         X_next = []
         for i in range(len(X)):
@@ -103,13 +114,26 @@ def gradient_descent():
                 break
 
         if abs(f(X_next) - f(X)) < eps_f or flag:
-            print(X_next)
-            print(f(X_next))
-            print(iterations)
+            # X_next = [round(X_next[0], PRECISION), round(X_next[1], PRECISION)]
+
+            X_answer = (float(round(X_next[0])), float(round(X_next[1], PRECISION)))
+            # print(iterations, calculations, X_answer, round(f(X_next), PRECISION))
+
+            print('1e-' + str(PRECISION), '\t', iterations, '\t', calculations, '\t', X_answer, '\t',round(f(X_next), PRECISION))
+
+            # print(iterations, )
+            # print(calculations, '\t')
+            # print(X_answer, '\t')
+            # print(round(f(X_next), PRECISION), '\t')
+
+            # print('x_min =', X_next)
+            # print('f_min =', round(f(X_next), PRECISION))
+            # print(iterations, 'iterations')
+            # print(calculations, 'calculations')
             break
 
         X = X_next
-        print(f(X))
+        # print(f(X))
 
 
 def main():
