@@ -5,7 +5,7 @@ from constants import EPS
 from lab1.variant import Variant3 as Var
 from math import sqrt, fabs
 
-DELTA = EPS / Decimal(2)
+DELTA = EPS / Decimal(4)
 
 
 def dichotomy(f, a, b):
