@@ -9,7 +9,6 @@ DELTA = EPS / Decimal(4)
 
 
 def dichotomy(f, a, b):
-    x1 = a
     while b - a > EPS:
         m = (a + b) / Decimal(2)
         x1 = m - DELTA
@@ -22,7 +21,6 @@ def dichotomy(f, a, b):
             a = x1
         else:
             a, b = x1, x2
-
     return Answer(a, f(a))
 
 
@@ -35,25 +33,30 @@ def fibonacci(f, a, b):
 
     la = a + fibonacci_n(n - 2) / fibonacci_n(n) * (b - a)
     mu = a + fibonacci_n(n - 1) / fibonacci_n(n) * (b - a)
-
+    f_la = f(la)
+    f_mu = f(mu)
     for k in range(1, n - 1):
-        if f(la) > f(mu):
+        if f_la > f_mu:
             a = la
             la = mu
+            f_la = f_mu
             mu = a + fibonacci_n(n - k - 1) / fibonacci_n(n - k) * (b - a)
+            f_mu = f(mu)
         else:
             b = mu
             mu = la
+            f_mu = f_la
             la = a + fibonacci_n(n - k - 2) / fibonacci_n(n - k) * (b - a)
+            f_la = f(la)
 
     mu = la + EPS
-    if f(la) < f(mu):
+    f_mu = f(mu)
+    if f_la < f_mu:
         b = mu
     else:
         a = la
 
     x = (b + a) / Decimal("2")
-
     return Answer(x, f(x))
 
 
