@@ -98,7 +98,7 @@ def gradient_descent():
             left, right = right, left
 
         dichotomy_result = dichotomy(g, left, right)
-        l = dichotomy_result[0].x
+        l = dichotomy_result.x
 
         X_next = []
         for i in range(len(X)):

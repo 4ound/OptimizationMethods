@@ -1,4 +1,4 @@
 from decimal import Decimal
 
-PRECISION = 7
+PRECISION = 2
 EPS = Decimal(f"1e-{PRECISION}")
